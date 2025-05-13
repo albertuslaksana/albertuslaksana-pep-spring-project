@@ -96,5 +96,4 @@ public class SocialMediaController {
     public List<Message> getAllMessagesFromUserHandler(@PathVariable int accountId){
         return messageService.getAllMessagesFromUser(accountId);
     }
-
 }

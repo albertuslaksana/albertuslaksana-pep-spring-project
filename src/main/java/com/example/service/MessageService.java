@@ -35,9 +35,31 @@ public class MessageService{
         return messageRepository.getMessageById(id);
     }
 
-    public Message deleteMessage(int messageId) {
-        return null;
+    public int deleteMessage(int messageId) {
+        int result = 0;
+        if(messageRepository.existsById(messageId)){
+            messageRepository.deleteById(messageId);
+            result = 1;
+            return result;
+        }
+        return result;
     }
+
+    public int updateMessage(int messageId, Message message){
+        int result = 1;
+        if(!messageRepository.existsById(messageId) || message.getMessageText().isBlank() || message.getMessageText().length() > 255){
+            result = 0;
+            return result;
+        }
+        messageRepository.getById(messageId).setMessageText(message.getMessageText());
+        return result;
+    } 
+
+    public List<Message> getAllMessagesFromUser(int accountId){
+        return messageRepository.getMessagesByUser(accountId);
+    }
+
+
 
     
     

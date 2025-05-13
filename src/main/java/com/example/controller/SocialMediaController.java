@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,9 +74,27 @@ public class SocialMediaController {
         return messageService.getMessageById(messageId);
     }
 
-    @DeleteMapping("/message/{messageId}")
-    public Message deleteMessageHandler(@PathVariable int messageId){
-        return messageService.deleteMessage(messageId);
+    @DeleteMapping("/messages/{messageId}")
+    public ResponseEntity<Integer> deleteMessageHandler(@PathVariable int messageId){
+        int result = messageService.deleteMessage(messageId);
+        if(result == 1){
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("/messages/{messageId}")
+    public ResponseEntity<Integer> updateMessageHandler(@PathVariable int messageId, @RequestBody Message message){
+        int result = messageService.updateMessage(messageId, message);
+        if(result == 1){
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("accounts/{accountId}/messages")
+    public List<Message> getAllMessagesFromUserHandler(@PathVariable int accountId){
+        return messageService.getAllMessagesFromUser(accountId);
     }
 
 }
